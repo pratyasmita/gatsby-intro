@@ -1,26 +1,35 @@
 import React from 'react';
 import { Global, css } from '@emotion/core';
 import Header from './header';
-const Layout = ({ children }) => (
-  <>
-    <Global
-      styles={css`
-        * {
-          box-sizing: border-box;
-          margin: 0;
-        }
-        * + * {
-          margin-top: 1rem;
-        }
-        html,
-        body {
-          margin: 0;
-          color: green;
-          font-family: Arial;
-          font-size: 18px;
-          line-hight: 1.4;
-          > div {
-            margin-top: 0;
+import Helmet from 'react-helmet';
+import useSiteMetadata from '../hooks/use-sitemetadata';
+
+const Layout = ({ children }) => {
+  const { title, description } = useSiteMetadata();
+  return (
+    <>
+      <Global
+        styles={css`
+          * {
+            box-sizing: border-box;
+            margin: 0;
+          }
+          * + * {
+            margin-top: 1rem;
+          }
+          html,
+          body {
+            margin: 0;
+            color: #555;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+              Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+              'Segoe UI Emoji', 'Segoe UI Symbol';
+            font-size: 18px;
+            line-hight: 1.4;
+
+            > div {
+              margin-top: 0;
+            }
           }
           h1,
           h2,
@@ -28,7 +37,7 @@ const Layout = ({ children }) => (
           h4,
           h5,
           h6 {
-            color: red;
+            color: #222;
             line-hight: 1.1;
             + * {
               margin-top: 0.5rem;
@@ -36,24 +45,28 @@ const Layout = ({ children }) => (
           }
 
           strong {
-            color: black;
+            color: #222;
           }
           li {
             margin-top: 0.25rem;
           }
-        }
-      `}
-    />
-    <Header></Header>
-    <main
-      css={css`
-        margin: 2rem auto 4rem;
-        max-width: 90vw;
-        width: 550px;
-      `}
-    >
-      {children}
-    </main>
-  </>
-);
+        `}
+      />
+      <Helmet>
+        <html lang="en" />
+        <title>{title}</title>
+        <meta name={description} content={description} />
+      </Helmet>
+      <Header></Header>
+      <main
+        css={css`
+          margin: 2rem auto;
+          width: 550px;
+        `}
+      >
+        {children}
+      </main>
+    </>
+  );
+};
 export default Layout;
